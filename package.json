@@ -1,0 +1,25 @@
+{
+  "name": "redux-jwt-check",
+  "version": "1.0.0",
+  "description": "Redux middleware to handle JWT authenticated actions",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matt-casey/redux-jwt-check.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "middleware",
+    "jwt"
+  ],
+  "author": "Matt Casey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matt-casey/redux-jwt-check/issues"
+  },
+  "homepage": "https://github.com/matt-casey/redux-jwt-check#readme"
+}

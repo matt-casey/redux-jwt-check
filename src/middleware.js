@@ -23,8 +23,7 @@ function throwMissingParam(paramName) {
 
 export default function setupMiddleware({
   getTokenFromState = throwMissingParam('getTokenFromState'),
-  getRefreshTokenFromState = nullFn,
-  getNewToken = nullFn,
+  getNewToken,
   onSuccess = nullFn,
   onError = nullFn,
   whitelistedActions = [],
@@ -39,27 +38,22 @@ export default function setupMiddleware({
       let newToken;
       const state = getState();
       const token = getTokenFromState(state);
-      const refreshToken = getRefreshTokenFromState(state);
 
-
-      if (isTokenExpired(token)) {
-        if (!refreshToken || !refreshToken) {
-          return dispatch(onError());
-        }
-
-        try {
-          newToken = await getNewToken(refreshToken);
-          dispatch(onSuccess(newToken));
-        } catch (error) {
-          return dispatch(onError(error));
-        }
+      if (!isTokenExpired(token)) {
+        return next(action);
       }
 
-      action.token = newToken ? newToken : token;
-      next({
-        ...action,
-        token: newToken || token,
-      });
+      if (!getNewToken) {
+        return dispatch(onError());
+      }
+
+      try {
+        newToken = await getNewToken(state);
+        dispatch(onSuccess(newToken));
+        return next(action);
+      } catch (error) {
+        return dispatch(onError(error));
+      }
     };
   };
 }
